@@ -1,0 +1,30 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "jest"
+    ],
+    "rules": {
+        "@typescript-eslint/naming-convention": "error",
+        "@typescript-eslint/semi": ["error", "never"],
+        "curly": ["error", "all"],
+        "eqeqeq": ["error", "smart"],
+        "no-throw-literal": "error",
+        "semi": "off"
+    },
+    "ignorePatterns": [
+        "dist",
+        "**/*.d.ts"
+    ],
+    "overrides": [
+        {
+            "files": [ "tests/**/*.ts" ],    
+            "env": { "jest/globals": true }
+        }
+    ]
+}
