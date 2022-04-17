@@ -44,7 +44,7 @@ export default class MiniMatcher extends RegExp {
       .replace(/\\\?/g, `${wildcard}{1}`)
 
     if (negated) {
-      pattern = `(?!${pattern})`
+      pattern = `(?!${pattern})[\\s\\S]+`
     } else {
       pattern = `${pattern}`
     }
