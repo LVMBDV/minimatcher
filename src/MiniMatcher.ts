@@ -1,5 +1,5 @@
 import escapeStringRegexp from "escape-string-regexp"
-import MiniMatcherOptions, { optionsToFlags } from "./MiniMatcherOptions"
+import MiniMatcherOptions, { optionsForCacheKey, optionsToFlags } from "./MiniMatcherOptions"
 
 export default class MiniMatcher extends RegExp {
   static #cache: Map<string, RegExp> = new Map()
@@ -19,7 +19,7 @@ export default class MiniMatcher extends RegExp {
   }
 
   static #compile(pattern: string, options: MiniMatcherOptions = {}): RegExp {
-    const cacheKey = pattern
+    const cacheKey = pattern + optionsForCacheKey(options)
 
     if (this.#cachingEnabled && this.#cache.has(cacheKey)) {
       return new RegExp(this.#cache.get(cacheKey)!, optionsToFlags(options))
@@ -30,17 +30,19 @@ export default class MiniMatcher extends RegExp {
       pattern = pattern.slice(1)
     }
 
+    const wildcard = options.whitespace ? "[\\s\\S]" : "[\\S]"
+
     pattern = escapeStringRegexp(pattern)
-      .replace(/\\\*/g, "[\\s\\S]*")
-      .replace(/\\\?/g, "[\\s\\S]{1}")
-    
+      .replace(/(\\\?)*(\\\*)+(\\\?)*/g, `${wildcard}*`)
+      .replace(/\\\?/g, `${wildcard}{1}`)
+
     if (negated) {
       pattern = `(?!${pattern})`
     } else {
       pattern = `${pattern}`
     }
 
-    if (!(options.global || options.multiline)) {
+    if (!options.global) {
       pattern = `^${pattern}$`
     }
 
@@ -53,6 +55,11 @@ export default class MiniMatcher extends RegExp {
   }
 
   constructor(readonly pattern: string, readonly options: MiniMatcherOptions = {}) {
-    super(MiniMatcher.#compile(pattern, options))
+    super(MiniMatcher.#compile(
+      pattern,
+      {
+        whitespace: true,
+        ...options
+      }))
   }
 }
