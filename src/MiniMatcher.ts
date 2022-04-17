@@ -18,13 +18,20 @@ export default class MiniMatcher extends RegExp {
     this.#cache.clear()
   }
 
+  /**
+   * Compiles the given pattern and options into a RegExp.
+   *
+   * @remarks
+   * A cached RegExp is returned if caching is enabled and the result is already
+   * cached.
+   */
   static #compile(pattern: string, options: MiniMatcherOptions = {}): RegExp {
     const cacheKey = pattern + optionsForCacheKey(options)
 
     if (this.#cachingEnabled && this.#cache.has(cacheKey)) {
       return new RegExp(this.#cache.get(cacheKey)!, optionsToFlags(options))
     }
-    
+
     const negated = pattern.startsWith("!") && pattern.length > 1
     if (negated) {
       pattern = pattern.slice(1)
