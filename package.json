@@ -2,9 +2,12 @@
   "name": "minimatcher",
   "version": "1.0.0",
   "description": "Simple wildcard matching in TypeScript and JavaScript",
+  "author": "Ata Kuyumcu",
+  "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
-    "prepare": "tsc",
-    "test": "jest"
+    "compile": "tsc",
+    "test": "jest",
+    "prepublish": "npm run compile && npm run test"
   },
   "keywords": [
     "match",
@@ -25,8 +28,6 @@
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "Ata Kuyumcu",
-  "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
     "escape-string-regexp": "^4.0.0"
   },
