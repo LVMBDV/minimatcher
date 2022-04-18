@@ -1,6 +1,6 @@
 {
   "name": "minimatcher",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simple wildcard matching in TypeScript and JavaScript",
   "author": "Ata Kuyumcu",
   "license": "SEE LICENSE IN LICENSE.md",
